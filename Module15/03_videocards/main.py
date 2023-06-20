@@ -1,9 +1,14 @@
-list = [3070,2060,3090,3070,3090]
+list = []
 max = 0
 new_list = []
-for a in list:
-    if a > max:
-        max = a
+n = int(input('Введите кол-во видеокарт: '))
+for a in range(n):
+    print('Видеокарта',a + 1,':',end = '')
+    card = int(input())
+    list.append(card)
+for i in list:
+    if i > max:
+        max = i
 for b in list:
     if b != max:
         new_list.append(b)

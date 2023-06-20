@@ -1,13 +1,19 @@
+def film_existence(movie, film_list):
+    for i_film in film_list:
+        if i_film == movie:
+            return True
+    return False
+
 films = ['Крепкий орешек', 'Назад в будущее', 'Таксист',
          'Леон', 'Богемская рапсодия', 'Город грехов',
          'Мементо', 'Отступники', 'Деревня']
+
 favourite = []
 n = int(input('Сколько фильмов хотите добавить? '))
 for _ in range(n):
-    film_name = input('Введите название фильма: ')
-    for film in films:
-        if film_name == film: #это условие выполняется и фильмы добавляются в список любимых фильмов
-            favourite.append(film_name)
-        else: #но также почему-то выполняется и это условие
-            print('Ошибка! Фильма',film_name,'у нас нет :(')
-print('Ваш список любимых фильмов:',favourite)
+    film = input('Введите название фильма: ')
+    if film_existence(film,films):
+        favourite.append(film)
+    else:
+        print('Ошибка! Такого фильма нет')
+print('Список любимых фильмов:',favourite)
