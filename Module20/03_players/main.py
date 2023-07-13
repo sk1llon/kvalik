@@ -3,5 +3,7 @@ players = {
     ("Bob", "Robbin"): (7, 5, 14),
     ("Rob", "Bobbin"): (12, 8, 2)
 }
-
-# TODO здесь писать код
+new_players = []
+for keys, values in players.items():
+    name, surname = keys
+    print(name, surname, values)

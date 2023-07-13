@@ -1,3 +1,16 @@
+def function(dct):
+    interests = []
+    surnames = []
+    surname_length = 0
+    for i_dict in dct:
+        interests.append(dct[i_dict]['interests'])
+        surnames.append(dct[i_dict]['surname'])
+    surnames = ''.join(surnames)
+    for _ in surnames:
+        surname_length += 1
+    return interests, surname_length
+
+
 students = {
     1: {
         'name': 'Bob',
@@ -20,25 +33,31 @@ students = {
 }
 
 
-def f(dict):
-    lst = []
-    string = ''
-    for i in dict:
-        lst += (dict[i]['interests'])
-        string += dict[i]['surname']
-    cnt = 0
-    for s in string:
-        cnt += 1
-    return lst, cnt
+# def f(dictionary):
+#     lst = []
+#     string = ''
+#     for i_dict in dictionary:
+#         lst += (dictionary[i_dict]['interests'])
+#         string += dict[i]['surname']
+#     cnt = 0
+#     for s in string:
+#         cnt += 1
+#     return lst, cnt
+#
+#
+# pairs = []
+# for i in students:
+#     pairs += (i, students[i]['age'])
+#
+#
+# my_lst = f(students)[0]
+# l = f(students)[1]
+# print(my_lst, l)
 
 
-pairs = []
-for i in students:
-    pairs += (i, students[i]['age'])
+for i_student in students:
+    print('{0} - {1}'.format(i_student, students[i_student]['age']))
+print('Полный список интересов всех студентов:', function(students)[0])
+print('Общая длина всех фамилий студентов:', function(students)[1])
 
 
-my_lst = f(students)[0]
-l = f(students)[1]
-print(my_lst, l)
-
-# TODO исправить код
