@@ -14,8 +14,9 @@ for i_line in text_file:
                     dictionary[i_sym] += 1
                 else:
                     dictionary[i_sym] = 1
-for keys, values in dictionary.items():
-    result = (keys + ' ' + str(round(values / length_of_text, 3)))
+sorted_dictionary = sorted(dictionary.items(), key=lambda item: item[1])
+for index in range(len(sorted_dictionary)):
+    result = str(sorted_dictionary[index][0]) + ' ' + str(round(sorted_dictionary[index][1] / length_of_text, 3))
     result += '\n'
     analysis.write(result)
 text_file.close()
