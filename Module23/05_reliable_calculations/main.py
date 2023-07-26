@@ -1,6 +1,27 @@
 def get_sage_sqrt(num):
+    # try:
+    #     if isinstance(num, int or float):
+    #         try:
+    #             if num >= 0:
+    #                 return round(num ** 2, 3)
+    #             else:
+    #                 raise ValueError
+    #         except ValueError:
+    #             print('Число отрицательное!')
+    #     else:
+    #         raise TypeError
+    # except TypeError:
+    #     print('Это не число!')
     try:
-        if isinstance(num, int or float):
+        if isinstance(num, int):
+            try:
+                if num >= 0:
+                    return num ** 2
+                else:
+                    raise ValueError
+            except ValueError:
+                print('Число отрицательное!')
+        elif isinstance(num, float):
             try:
                 if num >= 0:
                     return round(num ** 2, 3)
