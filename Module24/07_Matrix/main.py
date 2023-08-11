@@ -3,52 +3,83 @@ import copy
 
 class Matrix:
 
-    def __init__(self, matrix):
-        self.matrix = matrix
+    def __init__(self, data):
+        self.data = data
 
-    def add(self, matrix_2):
-        pass
-    def subtract(self, matrix_2):
+    def __str__(self):
+        return '\n'.join([' '.join(map(str, row)) for row in self.data])
 
-        pass
+    def __add__(self, other):
+        if len(self.data) != len(other.data) or len(self.data[0]) != len(other.data[0]):
+            raise ValueError("Матрицы должны быть одного размера для сложения.")
 
-    def multiply(self, matrix_2):
+        result_data = []
+        for i in range(len(self.data)):
+            row = [self.data[i][j] + other.data[i][j] for j in range(len(self.data[0]))]
+            result_data.append(row)
 
-        pass
+        return Matrix(result_data)
+
+    def __sub__(self, other):
+        if len(self.data) != len(other.data) or len(self.data[0]) != len(other.data[0]):
+            raise ValueError("Матрицы должны быть одного размера для вычитания.")
+
+        result_data = []
+        for i in range(len(self.data)):
+            row = [self.data[i][j] - other.data[i][j] for j in range(len(self.data[0]))]
+            result_data.append(row)
+
+        return Matrix(result_data)
+
+    def __mul__(self, other):
+        if len(self.data[0]) != len(other.data[0]):
+            raise ValueError(
+                "Количество столбцов первой матрицы должно быть равно количеству строк второй матрицы для умножения.")
+
+        result_data = []
+        for i in range(len(self.data)):
+            row = []
+            for j in range(len(other.data[0])):
+                element = sum(self.data[i][k] * other.data[k][j] for k in range(len(self.data[0])))
+                row.append(element)
+            result_data.append(row)
+
+        return Matrix(result_data)
 
     def transpose(self):
+        result_data = []
+        for j in range(len(self.data[0])):
+            row = [self.data[i][j] for i in range(len(self.data))]
+            result_data.append(row)
 
-        pass
-    def columns(self):
-        for i_elem in self.matrix:
-            return len(i_elem)
-    def print_result(self):
-        for i_list in self.matrix:
-            for i_elem in i_list:
-                print(i_elem, end=' ')
-            print()
+        return Matrix(result_data)
 
 
 m1 = Matrix([[1, 2, 3], [4, 5, 6]])
-
 m2 = Matrix([[7, 8, 9], [10, 11, 12]])
 
 print("Матрица 1:")
 print(m1)
 
-print("Матрица 2:")
+print('Матрица 2:')
 print(m2)
 
-print("Сложение матриц:")
-print(m1.add(m2))
+print('Сложение матриц:')
+result_add = m1 + m2
+print(result_add)
 
 print("Вычитание матриц:")
-print(m1.subtract(m2))
+result_sub = m1 - m2
+print(result_sub)
+
 
 m3 = Matrix([[1, 2], [3, 4], [5, 6]])
 
 print("Умножение матриц:")
-print(m1.multiply(m3))
+result_mul = m1 * m2
+print(result_mul)
 
 print("Транспонирование матрицы 1:")
 print(m1.transpose())
+print('Транспонирование матрицы 2:')
+print(m2.transpose())
