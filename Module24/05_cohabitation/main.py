@@ -12,8 +12,8 @@ class Person:
 
     def check_info(self):
         dice = random.randint(1, 6)
-        if self.satiety <= 0:
-            raise ValueError
+        if self.satiety < 0:
+            raise ValueError('Один из сожителей погиб')
         elif dice == 1:
             self.work()
         elif dice == 2:
@@ -37,7 +37,7 @@ class Person:
 
     def work(self):
         print('Сытость: ' + str(self.satiety), 'Деньги: ' + str(self.money), sep='\n')
-        self.satiety -= 10
+        self.satiety -= 5
         self.money += 20
         print(self.name, 'поработал')
         print('Сытость: ' + str(self.satiety), 'Деньги: ' + str(self.money), sep='\n')
@@ -45,7 +45,7 @@ class Person:
 
     def games(self):
         print('Сытость: ' + str(self.satiety))
-        self.satiety -= 10
+        self.satiety -= 5
         print(self.name, 'поиграл')
         print('Сытость: ' + str(self.satiety))
         print()
@@ -62,15 +62,15 @@ class Person:
 count = 0
 person_1 = Person('Олег')
 person_2 = Person('Дима')
-while count < 31:
-    try:
-        person_1.check_info()
-        person_2.check_info()
-        person_1.count += 1
-        person_2.count += 1
-    except ValueError:
-        print('К сожалению один или оба проживающих погибли...')
-        break
+while count < 365:
     count += 1
+    print('День', count)
+    print()
+    person_1.check_info()
+    person_2.check_info()
+    if person_1.check_info() or person_2.check_info() == ValueError:
+        break
+    person_1.count += 1
+    person_2.count += 1
 if person_1.count == count and person_2.count == count:
     print('Вы успешно прожили!')

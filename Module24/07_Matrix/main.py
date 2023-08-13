@@ -32,7 +32,7 @@ class Matrix:
         return Matrix(result_data)
 
     def __mul__(self, other):
-        if len(self.data[0]) != len(other.data[0]):
+        if len(self.data[0]) != len(other.data):
             raise ValueError(
                 "Количество столбцов первой матрицы должно быть равно количеству строк второй матрицы для умножения.")
 
@@ -76,7 +76,7 @@ print(result_sub)
 m3 = Matrix([[1, 2], [3, 4], [5, 6]])
 
 print("Умножение матриц:")
-result_mul = m1 * m2
+result_mul = m1 * m3
 print(result_mul)
 
 print("Транспонирование матрицы 1:")
