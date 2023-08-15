@@ -58,6 +58,7 @@ def one_year_of_war():
 
         # Мёртвые монстры удаляются из списка
         evil_team = [mob for mob in evil_team if mob.is_alive()]
+        good_team = [hero for hero in good_team if hero.is_alive()]
         # Новые монстры в чётные дни добавляются в список (но их не может быть больше 4)
         if day % 2 == 0 and len(evil_team) < 4:
             newborn_evils = [MonsterBerserk("Берсерк " + random.choice(evil_names)), MonsterHunter("Рейнджер " + random.choice(evil_names))]

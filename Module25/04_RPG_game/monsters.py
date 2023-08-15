@@ -30,7 +30,7 @@ class Monster:
         return self.__is_alive
 
     def take_damage(self, damage):
-        print("\t", self.name, "Получил удар с силой равной = ", round(damage), ". Осталось здоровья - ", round(self.get_hp()))
+        print(self.name, "Получил удар с силой равной = ", round(damage), ". Осталось здоровья - ", round(self.get_hp()))
         if self.get_hp() <= 0:
             self.__is_alive = False
 
@@ -68,9 +68,7 @@ class MonsterBerserk(Monster):
         else:
             target = random.choice(enemies)
             print("BERSERK MODE!!! Уровень безумия - " + str(self.madness) + " Случайно атакую -", target.name)
-            print()
             self.attack(target)
-        print('\n')
 
 
 class MonsterHunter(Monster):
@@ -109,4 +107,3 @@ class MonsterHunter(Monster):
                 return
             print("Атакую ближнего -", enemies[0].name)
             self.attack(enemies[0])
-        print('\n')

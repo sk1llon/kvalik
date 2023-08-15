@@ -44,27 +44,59 @@ class Hero:
     # Они нужны исключительно для наглядности.
     # Метод make_a_move базового класса могут вызывать только герои, не монстры.
     def attack(self, target):
-        # Каждый наследник будет наносить урон согласно правилам своего класса
-        raise NotImplementedError("Вы забыли переопределить метод Attack!")
+        pass
 
     def take_damage(self, damage):
         # Каждый наследник будет получать урон согласно правилам своего класса
         # При этом у всех наследников есть общая логика, которая определяет жив ли объект.
-        print("\t", self.name, "Получил удар с силой равной = ", round(damage), ". Осталось здоровья - ", round(self.get_hp()))
+        print(self.name, "Получил удар с силой равной = ", round(damage), ". Осталось здоровья - ", round(self.get_hp()))
         # Дополнительные принты помогут вам внимательнее следить за боем и изменять стратегию, чтобы улучшить выживаемость героев
         if self.get_hp() <= 0:
             self.__is_alive = False
 
     def make_a_move(self, friends, enemies):
-        # С каждым днём герои становятся всё сильнее.
         self.set_power(self.get_power() + 0.1)
 
     def __str__(self):
-        # Каждый наследник должен выводить информацию о своём состоянии, чтобы вы могли отслеживать ход сражения
-        raise NotImplementedError("Вы забыли переопределить метод __str__!")
+        return 'Name: {} | HP: {}'.format(self.name, round(self.get_hp()))
 
 
 class Healer(Hero):
+    def __init__(self, name):
+        super().__init__(name)
+        self.magic_power = self.start_power * 3
+
+    def attack(self, target):
+        target.take_damage(self.get_power() / 2)
+
+    def take_damage(self, damage):
+        self.set_hp(self.get_hp() - damage * 1.2)
+        print(self.name, "Получил удар с силой равной = ", round(damage), ". Осталось здоровья - ",
+              round(self.get_hp()))
+        if self.get_hp() <= 0:
+            self.__is_alive = False
+
+    def heal(self, target):
+        target.set_hp(self.get_hp() + self.magic_power)
+
+    def make_a_move(self, friends, enemies):
+        target_of_potion = friends[0]
+        min_health = target_of_potion.get_hp()
+        for friend in friends:
+            if friend.get_hp() < min_health:
+                target_of_potion = friend
+                min_health = target_of_potion.get_hp()
+
+        if min_health < 60:
+            print('Исцеляю', target_of_potion.name)
+            self.heal(target_of_potion)
+        else:
+            if not enemies:
+                return
+            print('Атакую ближнего -', enemies[0].name)
+            self.attack(enemies[0])
+
+
     # Целитель:
     # Атрибуты:
     # - магическая сила - равна значению НАЧАЛЬНОГО показателя силы умноженному на 3 (self.__power * 3)
@@ -77,6 +109,47 @@ class Healer(Hero):
 
 
 class Tank(Hero):
+    def __init__(self, name):
+        super().__init__(name)
+        self.defense = 1
+        self.is_shield = False
+
+    def attack(self, target):
+        target.take_damage(self.get_power() / 2)
+
+    def take_damage(self, damage):
+        self.set_hp(self.get_hp() - damage / self.defense)
+        print(self.name, "Получил удар с силой равной = ", round(damage), ". Осталось здоровья - ",
+              round(self.get_hp()))
+        if self.get_hp() <= 0:
+            self.__is_alive = False
+
+    def shield_up(self):
+        if not self.is_shield:
+            self.is_shield = True
+            self.defense *= 2
+            self.set_power(self.get_power() / 2)
+
+    def shield_down(self):
+        if self.is_shield:
+            self.is_shield = False
+            self.defense /= 2
+            self.set_power(self.get_power() * 2)
+
+    def make_a_move(self, friends, enemies):
+        if self.get_hp() < 30:
+            self.shield_up()
+            print('{} поднял щит'.format(
+                self.name
+            ))
+        else:
+            self.shield_down()
+            self.attack(enemies[0])
+            print('{} опустил щит и атакует {}'.format(
+                self.name,
+                enemies[0].name
+            ))
+
     # Танк:
     # Атрибуты:
     # - показатель защиты - изначально равен 1, может увеличиваться и уменьшаться
@@ -91,6 +164,44 @@ class Tank(Hero):
 
 
 class Attacker(Hero):
+    def __init__(self, name):
+        super().__init__(name)
+        self.power_multiply = 1
+
+    def attack(self, target):
+        target.take_damage(self.get_power() * self.power_multiply)
+        self.power_down()
+
+    def take_damage(self, damage):
+        self.set_hp(self.get_hp() - damage * (self.power_multiply / 2))
+        print(self.name, "Получил удар с силой равной = ", round(damage), ". Осталось здоровья - ",
+              round(self.get_hp()))
+        if self.get_hp() <= 0:
+            self.__is_alive = False
+
+    def power_up(self):
+        self.power_multiply *= 2
+
+    def power_down(self):
+        self.power_multiply /= 2
+
+    def make_a_move(self, friends, enemies):
+        if self.power_multiply < 4:
+            self.power_up()
+            print('{} использвует усиление'.format(
+                self.name
+            ))
+        else:
+            self.attack(enemies[0])
+            print('{} атакует {}'.format(
+                self.name,
+                enemies[0]
+            ))
+
+
+
+
+
     # Убийца:
     # Атрибуты:
     # - коэффициент усиления урона (входящего и исходящего)
