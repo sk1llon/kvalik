@@ -9,6 +9,7 @@ def counter(func: Callable) -> Any:
     @functools.wraps(func)
     def wrapped_func(*args, **kwargs):
         wrapped_func.count += 1
+        print('Функция была вызвана {count} раз(а)'.format(count=wrapped_func.count))
         return func(*args, **kwargs)
     wrapped_func.count = 0
     return wrapped_func
@@ -25,6 +26,3 @@ def say_hello():
 say_hello()
 say_hello()
 say_hello()
-print('Функция была вызвана {} раз(а)'.format(
-    say_hello.count
-))

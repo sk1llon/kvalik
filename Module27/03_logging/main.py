@@ -34,9 +34,25 @@ def decorated_func():
         for i in range(10):
             print(a)
     except Exception as exc:
-        print(type(exc))
-        with open('function_errors.log', 'w', encoding='utf-8') as errors_log:
-            errors_log.write('Ошибка: ' + str(type(exc)) + '\n' + 'Время ошибки: ' + str(datetime.now()))
+        with open('function_errors.log', 'a', encoding='utf-8') as errors_log:
+            errors_log.write('\nФункция: decorated_func\nОшибка: ' + str(type(exc)) + '\n' + 'Время ошибки: ' + str(datetime.now()))
+
+
+@logging
+def decorated_func_2():
+    """
+    Декорируемая функция. Делает отсчёт от 0 до 100 с шагом в 10
+    :return:
+    """
+    try:
+        for i in range(0, 100, 10):
+            print(b)
+    except Exception as exc:
+        with open('function_errors.log', 'a', encoding='utf-8') as errors_log:
+            errors_log.write(
+                '\nФункция: decorated_func_2\nОшибка: ' + str(type(exc)) + '\n' + 'Время ошибки: ' + str(datetime.now())
+                             )
 
 
 decorated_func()
+decorated_func_2()

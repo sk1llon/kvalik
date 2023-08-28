@@ -18,12 +18,12 @@ def cache_decorate(func: Callable) -> Any:
         :param kwargs:
         :return:
         """
-        if args in cache:
-            yield cache[args]
+        if args[0] in cache:
+            yield from cache
         else:
             result = func(*args, **kwargs)
             cache[args] = result
-            yield result
+            return result
         return wrapped_func
 
 
