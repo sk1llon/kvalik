@@ -1,3 +1,6 @@
+import copy
+
+
 class LRUCache:
     cache_list = list()
 
@@ -7,7 +10,11 @@ class LRUCache:
 
     @property
     def cache(self):
-        return
+        if len(self.cache_list) > 0:
+            for i_key, i_value in self.cache_list[0].items():
+                return 'Самый старый запрос - {i_key}: {i_value}'.format(i_key=i_key,
+                                                                         i_value=i_value)
+        return 'Список запросов пуст'
 
     @cache.setter
     def cache(self, new_elem):
@@ -16,11 +23,15 @@ class LRUCache:
         if self.current_capacity < self.capacity:
             self.current_capacity += 1
             dictionary[key] = value
-            self.cache_list.append(dictionary)
+            dict_copy = copy.deepcopy(dictionary)
+            self.cache_list.append(dict_copy)
             dictionary.clear()
         else:
             self.cache_list.pop(0)
-            self.current_capacity -= 1
+            dictionary[key] = value
+            dict_copy = copy.deepcopy(dictionary)
+            self.cache_list.append(dict_copy)
+            dictionary.clear()
 
     def print_cache(self):
         for i_index in range(len(self.cache_list)):
@@ -28,16 +39,13 @@ class LRUCache:
                 print(i_keys, ':', i_values)
 
     def get(self, key):
-        for i_index in range(len(self.cache_list)):
-            for i_dict in self.cache_list[i_index]:
-                for i_keys in i_dict.keys():
-                    if i_keys == key:
-                        if i_index != len(self.cache_list):
-                            self.cache_list[i_index], self.cache_list[i_index + 1] = self.cache_list[i_index + 1],\
+        for i_index, i_value in enumerate(self.cache_list):
+            for i_keys, i_values in i_value.items():
+                if i_keys == key:
+                    if i_index != len(self.cache_list):
+                        self.cache_list[i_index], self.cache_list[i_index + 1] = self.cache_list[i_index + 1],\
                                                                                      self.cache_list[i_index]
-                        return i_dict[key]
-                    else:
-                        return None
+                    return i_values
 
 
 # Создаем экземпляр класса LRU Cache с capacity = 3
@@ -56,6 +64,8 @@ print(cache.get("key2"))  # value2
 
 # Добавляем новый элемент, превышающий лимит capacity
 cache.cache = ("key4", "value4")
+
+print(cache.cache)
 
 # Выводим обновленный кэш
 cache.print_cache()  # key2 : value2, key3 : value3, key4 : value4
