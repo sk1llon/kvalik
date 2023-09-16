@@ -1,4 +1,21 @@
-# TODO здесь писать код
+import time
+
+
+class LoggerDecorator:
+
+    def __init__(self, func):
+        self.func = func
+
+    def __call__(self, *args, **kwargs):
+        print('Вызов функции', self.func.__name__)
+        start = time.time()
+        my_res = self.func(*args, **kwargs)
+        print('Аргументы: {arguments}\nРезультат: {result}\nВремя выполнения: {time}'.format(
+            arguments=args,
+            result=my_res,
+            time=time.time() - start
+        ))
+        return my_res
 
 
 @LoggerDecorator
