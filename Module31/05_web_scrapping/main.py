@@ -1,6 +1,13 @@
-# TODO здесь писать код
+import re
 
-# В данном случае запрос request.get заменен на загрзку сайта из файла html
+
 with open('examples.html', 'r') as f:
     text = f.read()
-# По итогу вы так же получаете код сайта в виде одной строки
+
+res = re.findall(r'<h3>\w*\s*\w*', text)
+result = []
+for i_string in res:
+    if '<h3>' in i_string:
+        i_string = i_string[4:]
+        result.append(i_string)
+print(result)
