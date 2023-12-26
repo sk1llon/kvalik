@@ -27,11 +27,10 @@ def json_comparison(old, new):
         elif isinstance(old[key], list):
             list_comparison(old[key], new[key])
         elif old[key] != new[key]:
-            old_diff[key] = old[key]
-            new_diff[key] = new[key]
+            yield 'Было:\n{key}: {old_value}\nСтало:\n{key}: {new_value}'\
+                .format(key=key, old_value=old[key], new_value=new[key])
 
 
-old_diff = dict()
-new_diff = dict()
-json_comparison(old_data, new_data)
-print('Было:\n', old_diff, '\nСтало:\n', new_diff)
+result = json_comparison(old_data, new_data)
+for value in result:
+    print(value)
